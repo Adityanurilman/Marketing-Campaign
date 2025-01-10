@@ -13,7 +13,7 @@ def load_data():
 data = load_data()  
   
 # Title of the web app  
-st.title("Data Science Project: Marketing Campaign Analysis")  
+st.title("Marketing Campaign Analysis")  
 st.write("This is an interactive web application for analyzing marketing campaign data.")  
   
 # Show dataset in the app  
