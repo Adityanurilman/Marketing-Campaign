@@ -10,7 +10,16 @@ def load_data():
     data = pd.read_csv(file_path, delimiter=';')  
     return data  
   
-data = load_data()  
+data = load_data()   
+  
+# Title of the web app  
+st.title("Data Science Project: Marketing Campaign Analysis")  
+st.write("This is an interactive web application for analyzing marketing campaign data.")  
+  
+# Show dataset in the app  
+st.subheader("Dataset Overview")  
+st.write(data.head())
+
 # Explanation of columns  
 st.subheader("Column Explanations")  
 explanations = {  
@@ -42,15 +51,7 @@ explanations = {
 }  
   
 for column, explanation in explanations.items():  
-    st.write(f"**{column}:** {explanation}")    
-  
-# Title of the web app  
-st.title("Data Science Project: Marketing Campaign Analysis")  
-st.write("This is an interactive web application for analyzing marketing campaign data.")  
-  
-# Show dataset in the app  
-st.subheader("Dataset Overview")  
-st.write(data.head())  
+    st.write(f"**{column}:** {explanation}")
   
 # Show basic statistics  
 st.subheader("Dataset Statistics")  
