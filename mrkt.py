@@ -24,13 +24,6 @@ st.write(data.head())
 st.subheader("Dataset Statistics")  
 st.write(data.describe())  
   
-# Check if required columns exist  
-required_columns = ['Education', 'Marital_Status', 'Year_Birth']  
-for col in required_columns:  
-    if col not in data.columns:  
-        st.error(f"Column '{col}' is missing from the dataset.")  
-        st.stop()  
-  
 # Multi-filter for user selection  
 st.subheader("Filter Data")  
 education_level = st.multiselect("Select Education Level", data['Education'].unique())  
@@ -45,6 +38,19 @@ filtered_data = data[
 ]  
   
 st.write(f"Filtered data: {filtered_data.shape[0]} rows")  
+  
+# Show filtered data  
+st.subheader("Filtered Data")  
+st.write(filtered_data)  
+  
+# Allow users to download the filtered data  
+csv = filtered_data.to_csv(index=False)  
+st.download_button(  
+    label="Download Filtered Data as CSV",  
+    data=csv,  
+    file_name='filtered_data.csv',  
+    mime='text/csv'  
+)  
   
 # Show distribution of income based on filters  
 st.subheader("Income Distribution")  
@@ -76,3 +82,36 @@ st.subheader("Recency vs Income")
 fig, ax = plt.subplots()  
 sns.scatterplot(data=filtered_data, x='Recency', y='Income', ax=ax)  
 st.pyplot(fig)  
+  
+# Explanation of columns  
+st.subheader("Column Explanations")  
+explanations = {  
+    "AcceptedCmp1": "1 if customer accepted the offer in the 1st campaign, 0 otherwise",  
+    "AcceptedCmp2": "1 if customer accepted the offer in the 2nd campaign, 0 otherwise",  
+    "AcceptedCmp3": "1 if customer accepted the offer in the 3rd campaign, 0 otherwise",  
+    "AcceptedCmp4": "1 if customer accepted the offer in the 4th campaign, 0 otherwise",  
+    "AcceptedCmp5": "1 if customer accepted the offer in the 5th campaign, 0 otherwise",  
+    "Response": "1 if customer accepted the offer in the last campaign, 0 otherwise",  
+    "Complain": "1 if customer complained in the last 2 years",  
+    "DtCustomer": "Date of customer’s enrolment with the company",  
+    "Education": "Customer’s level of education",  
+    "Marital": "Customer’s marital status",  
+    "Kidhome": "Number of small children in customer’s household",  
+    "Teenhome": "Number of teenagers in customer’s household",  
+    "Income": "Customer’s yearly household income",  
+    "MntFishProducts": "Amount spent on fish products in the last 2 years",  
+    "MntMeatProducts": "Amount spent on meat products in the last 2 years",  
+    "MntFruits": "Amount spent on fruits products in the last 2 years",  
+    "MntSweetProducts": "Amount spent on sweet products in the last 2 years",  
+    "MntWines": "Amount spent on wine products in the last 2 years",  
+    "MntGoldProds": "Amount spent on gold products in the last 2 years",  
+    "NumDealsPurchases": "Number of purchases made with discount",  
+    "NumCatalogPurchases": "Number of purchases made using catalogue",  
+    "NumStorePurchases": "Number of purchases made directly in stores",  
+    "NumWebPurchases": "Number of purchases made through company’s web site",  
+    "NumWebVisitsMonth": "Number of visits to company’s web site in the last month",  
+    "Recency": "Number of days since the last purchase"  
+}  
+  
+for column, explanation in explanations.items():  
+    st.write(f"**{column}:** {explanation}")  
