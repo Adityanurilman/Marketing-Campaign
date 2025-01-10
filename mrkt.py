@@ -24,13 +24,20 @@ st.write(data.head())
 st.subheader("Dataset Statistics")  
 st.write(data.describe())  
   
+# Check if required columns exist  
+required_columns = ['Education', 'Marital_Status', 'Year_Birth']  
+for col in required_columns:  
+    if col not in data.columns:  
+        st.error(f"Column '{col}' is missing from the dataset.")  
+        st.stop()  
+  
 # Multi-filter for user selection  
 st.subheader("Filter Data")  
 education_level = st.multiselect("Select Education Level", data['Education'].unique())  
 marital_status = st.multiselect("Select Marital Status", data['Marital_Status'].unique())  
 birth_years = st.multiselect("Select Birth Year", data['Year_Birth'].unique())  
   
-# Apply filters  
+# Apply filters with error handling  
 filtered_data = data[  
     (data['Education'].isin(education_level) if education_level else True) &  
     (data['Marital_Status'].isin(marital_status) if marital_status else True) &  
@@ -50,11 +57,14 @@ st.subheader("Correlation Heatmap")
   
 # Ensure all columns are numeric and handle NaN values  
 numeric_data = filtered_data.select_dtypes(include=[float, int]).fillna(0)  
-corr_matrix = numeric_data.corr()  
+if not numeric_data.empty:  
+    corr_matrix = numeric_data.corr()  
   
-fig, ax = plt.subplots(figsize=(10, 8))  
-sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap='coolwarm', ax=ax)  
-st.pyplot(fig)  
+    fig, ax = plt.subplots(figsize=(10, 8))  
+    sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap='coolwarm', ax=ax)  
+    st.pyplot(fig)  
+else:  
+    st.write("No numeric data available for correlation.")  
   
 # Visualize Marketing Campaign Responses  
 st.subheader("Marketing Campaign Responses")  
